@@ -75,8 +75,11 @@ OracleFirstProject 참조
 		  => 이메일 주소, 주민번호 등
 	   - 외래키(FOREIGN KEY) : 참조 무결성
 		  => 다른 테이블의 기본키를 이용해서 연결
-		      ```게시판(게시판 번호(PK)) --- 댓글(게시판 번호 포함)                       
-              회원(ID(PK)) --- 예약(회원 ID)```                  
+
+		      ```
+      		  게시판(게시판 번호(PK)) - 댓글(게시판 번호 포함)                       
+              회원(ID(PK)) - 예약(회원 ID)
+      		  ```                  
 	   - 슈퍼키 / 대리키 등
 
 13. 관계대수
@@ -92,7 +95,8 @@ OracleFirstProject 참조
 		  => 합집합 / 차집합 / 교집합 / 카디션 프로덕트
 14. DQL - SELECT 문장
      - 형식/순서
-		  ```SELECT *(ALL) / 원하는 컬럼지정(column list)
+		  ```
+          SELECT *(ALL) / 원하는 컬럼지정(column list)
 		  FROM 테이블명;
 		  => 필수 조건
 		  [
@@ -101,7 +105,8 @@ OracleFirstProject 참조
 		  HAVING(그룹 조건, GROUP BY가 있을때만 사용)
 		  ORDER BY(정렬 컬럼) DESC(내림차순)/ASC(오름차순)
 		  ]
-		  => 옵션, 순서 지켜야함```
+		  => 옵션, 순서 지켜야함
+          ```
 15. SQL의 종류
 	 - DML(데이터 조작어) :  **SELECT => 데이터 검색(형식 많음), INSERT => 데이터 추가, UPDATE => 데이터 수정, DELETE => 데이터 삭제
 		=> SELECT는 검색
