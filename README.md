@@ -1,5 +1,6 @@
 ## 04/10 - JDBC 오라클 연결
-파일 참조
+OracleFirstProject 참조
+
 
 
 ## 04/13 - 데이터베이스 개념, 발전 과정 / 릴레이션과 무결성 / DQL-SELECT 기초 정리
