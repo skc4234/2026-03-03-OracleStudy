@@ -109,11 +109,11 @@ OracleFirstProject 참조
           ```
 15. SQL의 종류
 	 - DML(데이터 조작어) :  **SELECT => 데이터 검색(형식 많음), INSERT => 데이터 추가, UPDATE => 데이터 수정, DELETE => 데이터 삭제
-		=> SELECT는 검색
-		=> INSERT, UPDATE, DELETE는 데이터가 변하기 때문에 반드시 COMMIT; 필요
+		- SELECT는 검색
+		- INSERT, UPDATE, DELETE는 데이터가 변하기 때문에 반드시 COMMIT; 필요
 	 - DDL(데이터 정의어) : 테이블 / 뷰 / 시퀀스 / 인덱스 / 시노님 / 함수 / 프로시저 / 트리거 등을 만들 때 사용
-		=> CREATE : 생성, DROP : 삭제, ALTER : 변경, TRUNCATE : 데이터 잘라내기, RENAME : 이름 변경
+	    - CREATE : 생성, DROP : 삭제, ALTER : 변경, TRUNCATE : 데이터 잘라내기, RENAME : 이름 변경
 	 - DCL(데이터 제어어) : 데이터 권한 관리
-		=> GRANT : 권한 부여, REVOKE : 권한 해제
+	    - GRANT : 권한 부여, REVOKE : 권한 해제
      - TCL(트랜잭션 제어어)
-		=> COMMIT : 정상적으로 저장, ROLLBACK : 명령문 전체 취소, SAVEPOINT : 원하는 부분만 취소 
+		- COMMIT : 정상적으로 저장, ROLLBACK : 명령문 전체 취소, SAVEPOINT : 원하는 부분만 취소 
