@@ -172,7 +172,7 @@ OracleFirstProject 참조
 					- NVL
 					- CASE
 
-	- DML(데이터
+	- DML(데이터 조작)
 	- DDL(데이터 정의)
 	- DCL(데이터 제어)
 	- TCL(트랜젝션 제어)
