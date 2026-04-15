@@ -122,7 +122,9 @@ OracleFirstProject 참조
 
 ## 04/15 SELECT(내장 함수-단일행함수, GROUP BY, HAVING)
 - SQL
-			- DQL(데이터 검색) : SELECT * / column_list
+			- DQL(데이터 검색)
+							```
+  							SELECT * / column_list
 						     FROM table_name
 						     [
 							WHERE ------- 연산자(true/false)
@@ -130,6 +132,7 @@ OracleFirstProject 참조
 							HAVING ------ 집계함수
 							ORDER BY ---- 컬럼 순서
 						     ]
+   							```
 				- 동작 순서 : FROM - WHERE - GROUP BY - HAVING - SELECT - ORDER  BY
 				- 연산자
 					- 산술 연산자 => ROW 단위 통계 => +, -, *, /
