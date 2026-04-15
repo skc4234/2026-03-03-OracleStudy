@@ -120,7 +120,7 @@ OracleFirstProject 참조
 
 
 
-## 04/15 SELECT(내장 함수-단일행함수, GROUP BY, HAVING)
+## 04/14, 04/15 SELECT(형식, 내장 함수-집계 함수, 단일행 함수, WHERE, ORDER BY, GROUP BY, HAVING)
 - SQL
 	- DQL(데이터 검색)
 		```
