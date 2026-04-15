@@ -116,4 +116,61 @@ OracleFirstProject 참조
 	 - DCL(데이터 제어어) : 데이터 권한 관리
 	    - GRANT : 권한 부여, REVOKE : 권한 해제
      - TCL(트랜잭션 제어어)
-		- COMMIT : 정상적으로 저장, ROLLBACK : 명령문 전체 취소, SAVEPOINT : 원하는 부분만 취소 
+		- COMMIT : 정상적으로 저장, ROLLBACK : 명령문 전체 취소, SAVEPOINT : 원하는 부분만 취소
+
+
+
+## 04/15 SELECT(내장 함수-단일행함수, GROUP BY, HAVING)
+- SQL
+			- DQL(데이터 검색) : SELECT * / column_list
+						     FROM table_name
+						     [
+							WHERE ------- 연산자(true/false)
+							GROUP BY --- 함수
+							HAVING ------ 집계함수
+							ORDER BY ---- 컬럼 순서
+						     ]
+				- 동작 순서 : FROM - WHERE - GROUP BY - HAVING - SELECT - ORDER  BY
+				- 연산자
+					- 산술 연산자 => ROW 단위 통계 => +, -, *, /
+											=> + : 덧셈, / : 정수/정수=실수, 0으로 나눌 수 없다
+					- 비교 연산자 => =, (!=, <>, ^=), <, >, <=, >=
+					- 논리 연산자 => AND, OR, NOT => !(X)
+					- BETWEEN A AND B : 기간, 범위
+					- IN(OR 대체 연산자)
+					- IS NULL / IS NOT NULL => NULL 처리
+					- LIKE : _, % 사용 => 문자열 포함 검색 가능
+						contains : %?%, startsWith : ?%, endsWith : %?
+				- 내장 함수(단일행 함수, 집계 함수)
+					- 집계 함수 : ROW
+						- COUNT : ROW의 개수
+						- MAX / MIN : COLUMN의 최대값/최소값
+						- SUM : COLUMN 전체의 합
+						- AVG : COLUMN 전체 평균
+						- RANK / DENSE_RANK : COLUMN 순위 => 1 2 2 4 / 1 2 2 3
+					- 단일행 함수
+						- 문자 함수
+							- LENGTH
+							- SUBSTR
+							- INSTR
+							- RPAD
+						- 숫자 함수
+							- CEIL
+							- ROUND
+							- TRUNC
+							- MOD
+						- 날짜 함수
+							- SYSDATE
+							- MONTS_BETWEEN
+						- 변환 함수
+							- TO_CHAR
+							- TO_DATE
+						- 기타 함수
+							- NVL
+							- CASE
+
+			- DML(데이터
+			- DDL(데이터 정의)
+			- DCL(데이터 제어)
+			- TCL(트랜젝션 제어)
+
