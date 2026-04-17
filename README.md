@@ -180,21 +180,191 @@ OracleFirstProject 참조
 
 
 ## 04/16 JOIN, SubQuery
+- JOIN : 두 개 이상의 테이블을 연결해서 출력에 필요한 데이터를 추출하는 과정
+	- 오라클 조인 : 오라클에서만 사용
+	- ANSI 조인 : 데이터베이스 표준
+	- **INNER JOIN** : 교집합
+			- **EQUI_JOIN
+			- NON_EQUI_JOIN : 범위 지정 => BETWEEN~AND
+			- NULL 값은 처리 불가
+	- OUTER JOIN : INNER JOIN을 보안 => NULL값 처리 가능
+		- LEFT OUTER JOIN => 왼쪽에 처리 안된 데이터 읽기
+		- RIGHT OUTER JOIN => 오른쪽에 처리 안된 데이터 읽기
+		- FULL OUTER JOIN => 양쪽에 있는 모든 데이터 읽기
+		- Admin에서 주로 사용
+		- **INNER JOIN과 OUTER JOIN은 컬럼명이 다를 수 있다**
+	- 자연 조인(NATURAL JOIN)
+	- USING : JOIN~USING
+   		- **컬럼명이 같아야 한다**
+
+	- 형식
+  		- INNER JOIN(오라클 조인)
+      		```
+			SELECT A.col, B.col
+			FROM A,B
+			WHERE A.col = B.col => 테이블 별칭 사용 가능
+
+			SELECT a.col, b.col
+			FROM A a, B b
+			WHERE a.col=b.col
+			=> 컬럼이 같으면 반드시 구분
+			```
+		- **ANSI JOIN**
+    		```
+			SELECT A.col, B.col
+			FROM A JOIN B
+      		ON A.col = B.col
+			```
+- SubQuery : 쿼리 안에 쿼리문장
+	- DML 전체에서 사용 가능(INSERT, UPDATE, DELETE)
+	- 종류
+		- WHERE 뒤에 일반 서브쿼리 => 조건문
+		- SELECT 뒤에 **스칼라 서브쿼리**(JOIN 대체) => 컬럼
+		- FROM 뒤에 **인라인뷰** => 테이블 => 페이징 기법
+	- 사용법
+   		- WHERE 뒤에 일반 서브쿼리
+       		```
+			MainQuery
+			WHERE (SUBQUERY)
+         	```
+	  	- SELECT 뒤에 스칼라 서브쿼리
+   	  		```
+			SELECT (SUBQUERY)
+			FROM ...
+			WHERE ...
+   	    	```
+		- FROM 뒤에 인라인뷰
+    		```
+			SELECT *
+			FROM (SUBQUERY)
+			WHERE 조건문
+			```
 
 
 
 
 ## 04/17 DDL, DML
 - DDL(데이터 정의어) => 단위가 COLUMN
-			- CREATE : 생성
-			- TALBE : 데이터를 저장하는 공간
-			- SEQUENCE : 자동 증가 번호 => 게시판 No.
-			- VIEW : 가상 테이블 => SELECT로 저장
-			- INDEX : 검색 최적화 / 정렬
-			- FUNCTION / PROCEDURE / TRIGGER : 함수, 기능 추가 => 5장
-			===> Auto Commit => 자동 저장(Commit 명령어 사용 안해도됨)
-			- ALTER : 추가 / 수정 / 삭제
-				- ADD  MODIFY DROP
-			- DROP : 전체 삭제
-			- RENAME : 테이블 이름 변경 => 리팩토링
-			- TRUNCATE : 테이블 유지, 데이터만 삭제
+	- CREATE : 생성
+	- TALBE : 데이터를 저장하는 공간
+	- SEQUENCE : 자동 증가 번호 => 게시판 No.
+	- VIEW : 가상 테이블 => SELECT로 저장
+	- INDEX : 검색 최적화 / 정렬
+	- FUNCTION / PROCEDURE / TRIGGER : 함수, 기능 추가 => 5장
+		- Auto Commit => 자동 저장(Commit 명령어 사용 안해도됨)
+	- ALTER : 추가 / 수정 / 삭제
+		- ADD / MODIFY / DROP
+	- DROP : 전체 삭제
+	- RENAME : 테이블 이름 변경 => 리팩토링
+	- TRUNCATE : 테이블 유지, 데이터만 삭제
+- CREATE
+	```
+	CREATE TABLE table_name (
+		[컬럼] [데이터형] [제약조건][제약조건], ... => NOT NULL / DEFAULT
+		[컬럼] [데이터형] [제약조건][제약조건], ...
+		[컬럼] [데이터형] [제약조건][제약조건], ...
+		...
+		[제약조건], => PK, FK, UK, CK
+		[제약조건]
+	);
+	```
+	- 제약조건
+   		- NOT NULL
+			- 반드시 입력을 필요로 하는 경우 => NOT NULL
+		- UNIQUE : 중복 금지
+			=> email / phone =>  후보키
+		- PRIMARY KEY : NOT NULL + UNIQUE
+			-  데이터 무결성 => 테이블 제작 시 반드시 한개 이상 추가
+		- FOREIGN KEY : 다른 테이블과 연결 => 외래키/참조키 
+		- CHECK : 지정된 데이터만 출력
+			-  radio / select(콤보박스) => 부서명 / 근무지 / 장르
+		- DEFAULT : 미리 데이터 설정
+			- regdate DATE DEFAULT SYSDATE
+   - 사용법
+  	```
+   CREATE TABLE board (
+    	no NUMBER,
+    	name VARCHAR2(51) CONSTRAINT board_name_nn NOT NULL,
+    	subject VARCHAR2(4000) CONSTRAINT board_subject_nn NOT NULL,
+    	content CLOB CONSTRAINT board_content_nn NOT NULL,
+    	pwd VARCHAR2(20) CONSTRAINT board_pwd_nn NOT NULL,
+    	regdate DATE DEFAULT SYSDATE,
+   		hit NUMBER DEFAULT 0,
+	    CONSTRAINT board_no_pk PRIMARY KEY(no)
+	);
+	
+	CREATE TABLE reply (
+    	no NUMBER,
+    	bno NUMBER,
+    	id VARCHAR2(20) CONSTRAINT reply_id_nn NOT NULL,
+    	name VARCHAR2(51) CONSTRAINT reply_name_nn NOT NULL,
+    	sex CHAR(6),
+    	msg CLOB CONSTRAINT reply_msg_nn NOT NULL,
+    	regdate DATE DEFAULT SYSDATE,
+    	CONSTRAINT reply_no_pk PRIMARY KEY(no),
+    	CONSTRAINT reply_bno_fk FOREIGN KEY(bno) REFERENCES board(no) ON DELETE CASCADE,
+    	CONSTRAINT reply_sex_ck CHECK(sex IN('남자','여자'))
+	);
+- ALTER : 삽입(ADD), 수정(MODIFY), 삭제(DROP)
+  	- 사용법
+  	 	```
+  	  	-- 제약조건 제거
+		ALTER TABLE board DROP CONSTRAINT board_name_nn;
+
+		-- 제약조건 변경
+		ALTER TABLE board MODIFY name VARCHAR(51) CONSTRAINT board_name_nn NOT NULL;
+
+  	  	-- 컬럼, 제약조건 추가
+		ALTER TABLE board ADD email VARCHAR2(20) CONSTRAINT board_email_UK UNIQUE;
+
+		-- 컬럼 변경
+		ALTER TABLE board MODIFY email VARCHAR2(200);
+
+		-- 컬럼 삭제
+		ALTER TABLE board DROP COLUMN email;
+		```  
+- DROP : 테이블 + ROW 전체 삭제
+  	```
+  	DROP TABLE [테이블명];
+	```
+   
+- INSERT
+	- 형식
+		- 전체 값 추가
+		```
+		// board에 있는 모든 값 추가
+		// DEFAULT가 있어도 반드시 값을 넣어야 한다
+		INSERT INTO board VALUES(값, 값, ...); // 문자열이나 날짜가 들어갈때는 작은따옴표 사용
+		```
+		- 지정된 값만 추가
+		```
+		// 지정하지 않은 값은 NULL 또는 DEFAULT 값
+		INSERT INTO board(no, name, subject, content, pwd) VALUES(지정된 값만 추가)
+		```
+- UPDATE
+	- 형식
+		- 전체 수정
+		```
+		// 모든 값이 한번에 수정
+		UPDATE table_name SET
+		컬럼=값, 컬럼=값...
+		```
+  		- 조건에 맞는 데이터만 수정
+		```
+		// WHERE 뒤에 조건 추가
+		UPDATE table_name SET
+		컬럼=값, 컬럼=값
+		WHERE 조건;
+		```
+-  DELETE
+	- 형식
+		- 전체 삭제
+		```
+		DELETE FROM table_name;
+		```
+		- 조건에 맞는 데이터 삭제
+		```
+		DELETE FROM table_name
+		WHERE 조건;
+		```
+- INSERT / UPDATE 는 제약조건을 반드시 확인
