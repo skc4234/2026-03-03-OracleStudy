@@ -177,3 +177,24 @@ OracleFirstProject 참조
 	- DCL(데이터 제어)
 	- TCL(트랜젝션 제어)
 
+
+
+## 04/16 JOIN, SubQuery
+
+
+
+
+## 04/17 DDL, DML
+- DDL(데이터 정의어) => 단위가 COLUMN
+			- CREATE : 생성
+			- TALBE : 데이터를 저장하는 공간
+			- SEQUENCE : 자동 증가 번호 => 게시판 No.
+			- VIEW : 가상 테이블 => SELECT로 저장
+			- INDEX : 검색 최적화 / 정렬
+			- FUNCTION / PROCEDURE / TRIGGER : 함수, 기능 추가 => 5장
+			===> Auto Commit => 자동 저장(Commit 명령어 사용 안해도됨)
+			- ALTER : 추가 / 수정 / 삭제
+				- ADD  MODIFY DROP
+			- DROP : 전체 삭제
+			- RENAME : 테이블 이름 변경 => 리팩토링
+			- TRUNCATE : 테이블 유지, 데이터만 삭제
