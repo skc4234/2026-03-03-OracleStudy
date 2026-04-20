@@ -1,3 +1,8 @@
+# Oracle Study (04/10~)
+
+
+
+***
 # 목차
 1. [JDBC 오라클 연결](#0410---jdbc-오라클-연결)
 2. [데이터베이스 개념, 발전 과정 / 릴레이션과 무결성 / DQL-SELECT 기초 정리](#0413---데이터베이스-개념-발전-과정--릴레이션과-무결성--dql-select-기초-정리)
@@ -5,17 +10,15 @@
 4. [JOIN, SubQuery](#0416---join-subquery)
 5. [DDL, DML](#0417---ddl-dml)
 6. [ROWNUM, SubQuery, VIEW, SEQUENCE](#0420---rownum-subquery-view-sequence)
-
+***
 
 
 ## 04/10 - JDBC 오라클 연결
-
-
 OracleFirstProject 참조
+***
 
 
-
-## 04/13 - 데이터베이스 개념, 발전 과정 / 릴레이션과 무결성 / DQL-SELECT 기초 정리
+## 04/13 - 데이터베이스 개념, 발전 과정 / 릴레이션과 무결성 / SQL 기초 정리
 <details><summary>숨기기/펼치기</summary>
 
 
@@ -134,6 +137,7 @@ OracleFirstProject 참조
 		- COMMIT : 정상적으로 저장, ROLLBACK : 명령문 전체 취소, SAVEPOINT : 원하는 부분만 취소
 </details>
 
+***
 
 
 ## 04/14, 04/15 - SELECT(형식, 내장 함수-집계 함수, 단일행 함수, WHERE, ORDER BY, GROUP BY, HAVING)
@@ -197,6 +201,7 @@ OracleFirstProject 참조
 	- TCL(트랜젝션 제어)
 </details>
 
+***
 
 ## 04/16 - JOIN, SubQuery
 <details><summary>숨기기/펼치기</summary>
@@ -263,6 +268,7 @@ OracleFirstProject 참조
 			```
 </details>
 
+***
 
 
 ## 04/17 - DDL, DML
@@ -395,6 +401,7 @@ OracleFirstProject 참조
 - INSERT / UPDATE 는 제약조건을 반드시 확인
 </details>
 
+***
 
 
 
@@ -511,3 +518,5 @@ OracleFirstProject 참조
 - 시퀀스는 독립적이기 때문에 테이블을 삭제해도 시퀀스는 남아있다
 - 복구하려면 삭제 후에 다시 생성
 </details>
+
+***
