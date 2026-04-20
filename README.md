@@ -1,17 +1,24 @@
 # 목차
 1. [JDBC 오라클 연결](#0410---jdbc-오라클-연결)
 2. [데이터베이스 개념, 발전 과정 / 릴레이션과 무결성 / DQL-SELECT 기초 정리](#0413---데이터베이스-개념-발전-과정--릴레이션과-무결성--dql-select-기초-정리)
-3. [SELECT(형식, 내장 함수-집계 함수, 단일행 함수, WHERE, ORDER BY, GROUP BY, HAVING)](#0414-0415-select형식-내장-함수-집계-함수-단일행-함수-where-order-by-group-by-having)
-4. [JOIN, SubQuery](#0416-join-subquery)
-5. [DDL, DML](#0417-ddl-dml)
-6. 
+3. [SELECT(형식, 내장 함수-집계 함수, 단일행 함수, WHERE, ORDER BY, GROUP BY, HAVING)](#0414-0415---select형식-내장-함수-집계-함수-단일행-함수-where-order-by-group-by-having)
+4. [JOIN, SubQuery](#0416---join-subquery)
+5. [DDL, DML](#0417---ddl-dml)
+6. [ROWNUM, SubQuery, VIEW, SEQUENCE](#0420---rownum-subquery-view-sequence)
+
+
 
 ## 04/10 - JDBC 오라클 연결
+
+
 OracleFirstProject 참조
 
 
 
 ## 04/13 - 데이터베이스 개념, 발전 과정 / 릴레이션과 무결성 / DQL-SELECT 기초 정리
+<details><summary>숨기기/펼치기</summary>
+
+
 1. 데이터베이스
    => 조직에 필요한 정보를 얻기 위해 논리적으로 연관된 데이터를 모아놓은 것
 2. 데이터베이스의 개념
@@ -125,10 +132,14 @@ OracleFirstProject 참조
 	    - GRANT : 권한 부여, REVOKE : 권한 해제
      - TCL(트랜잭션 제어어)
 		- COMMIT : 정상적으로 저장, ROLLBACK : 명령문 전체 취소, SAVEPOINT : 원하는 부분만 취소
+</details>
 
 
 
-## 04/14, 04/15 SELECT(형식, 내장 함수-집계 함수, 단일행 함수, WHERE, ORDER BY, GROUP BY, HAVING)
+## 04/14, 04/15 - SELECT(형식, 내장 함수-집계 함수, 단일행 함수, WHERE, ORDER BY, GROUP BY, HAVING)
+<details><summary>숨기기/펼치기</summary>
+
+	
 - SQL
 	- DQL(데이터 검색)
 		```
@@ -184,10 +195,13 @@ OracleFirstProject 참조
 	- DDL(데이터 정의)
 	- DCL(데이터 제어)
 	- TCL(트랜젝션 제어)
+</details>
 
 
+## 04/16 - JOIN, SubQuery
+<details><summary>숨기기/펼치기</summary>
 
-## 04/16 JOIN, SubQuery
+	
 - JOIN : 두 개 이상의 테이블을 연결해서 출력에 필요한 데이터를 추출하는 과정
 	- 오라클 조인 : 오라클에서만 사용
 	- ANSI 조인 : 데이터베이스 표준
@@ -247,11 +261,14 @@ OracleFirstProject 참조
 			FROM (SUBQUERY)
 			WHERE 조건문
 			```
+</details>
 
 
 
+## 04/17 - DDL, DML
+<details><summary>숨기기/펼치기</summary>
 
-## 04/17 DDL, DML
+	
 - DDL(데이터 정의어) => 단위가 COLUMN
 	- CREATE : 생성
 	- TALBE : 데이터를 저장하는 공간
@@ -376,3 +393,121 @@ OracleFirstProject 참조
 		WHERE 조건;
 		```
 - INSERT / UPDATE 는 제약조건을 반드시 확인
+</details>
+
+
+
+
+## 04/20 - ROWNUM, SubQuery, VIEW, SEQUENCE
+
+<details><summary>ROWNUM</summary>
+
+- 오라클에서 지원하는 가상 컬럼 => ROWNUM / ROWID(INDEX에서 사용)
+- 가상 컬럼은 모든 테이블이 갖고 있다
+- 오라클에서 순차적으로 ROW에 번호를 부여
+- 사용처
+	- 인기 순위, 페이징, 게시판 상세보기(이전/다음)
+- 가상 컬럼의 단점 : TOP-N => 처음부터 N까지 => 중간부터 불가
+</details>
+
+<details><summary>SubQuery</summary>
+	
+- 일반 서브쿼리 => 조건값 => WHERE 뒤에
+	- 단일행 서브쿼리 => 결과값 1개
+	- 다중행 서브쿼리 => 결과값 여러개
+	- 다중컬럼 서브쿼리 => 컬럼 여러개
+	```
+	SELECT 
+	FROM table_name
+	WHERE 컬럼 연산자 (SELECT ~)
+			  --------
+	// 비교 연산자 : =, >, <, >=, <=, <>  ===> 서브쿼리의 결과값이 1개 일때
+	// 집합 연산자 : IN, NOT IN
+	// 한정 연산자 : ANY, SOME, ALL => 결과값 중에 1개 결정 => MAX, MIN
+	// 존재 연산자 : EXISTS, NOT EXISTS
+	```
+- 인라인뷰 : 테이블 대신 사용 => 한번만 사용(보안/페이징 기법) => FROM 뒤에
+	```
+	// 테이블 역할
+	SELECT ~
+	FROM (SELECT ~)
+	// SELECT가 안보이게 만드는 과정 : VIEW
+	```
+	- 없는 데이터가 있는 경우에 오류
+- 스칼라 서브쿼리 : 컬럼 대신 사용 : JOIN 대체 => SELECT 뒤에
+	- SELECT 안에 들어가는 서브쿼리
+	- 반드시 결과값이 1개
+	- 주로 집계함수와 사용
+	- CASE 문장과 같이 쓰임
+- 스칼라 서브쿼리 / 인라인뷰 => 저장이 안됨(보안)
+- 컬럼 1개            임시 테이블
+</details>
+
+<details><summary>VIEW</summary>
+	
+- 하나 이상의 테이블을 연결해서 만든 가상 테이블
+- 보여만 주는 역할(SELECT) => 단순 뷰에서는 DML 가능(INSERT, DELETE)
+- 장점
+	- 편리성 : SQL 문장을 간결하게 만들 수 있다
+	- 재사용성 : 자주 사용하는 SQL문을 뷰로 정의해두면 재사용이 가능
+	- 보안성 : 데이터가 저장이 안된 상태 => 단순한 SELECT 문장으로만 DB에 저장
+	- 응용프로그램(웹, 애플리케이션)에서 사용하기 편리하다
+	- SQL 문장이 간결하기 때문에 오류가 거의 없다
+	- JOIN / SUBQUERY 등 SQL 문장이 복잡할 때 VIEW 사용
+- 단점
+	- VIEW에서 DML이 되는 것이 아니라 실제 참조하는 테이블에 영향을 미침
+   	- 데이터가 많으면 속도 저하가 크다 => JOIN 사용
+- 뷰의 종류
+	- 단순 뷰 : 한 개의 테이블 참조(거의 사용 x)
+	- 복합 뷰 : 두 개 이상의 테이블을 참조(조인, 서브쿼리 등)
+	- 인라인뷰 : 임시 테이블을 만들어서 처리(한번만 사용)
+- 생성
+	```
+	CREATE VIEW view_name // VIEW는 SELECT 문장을 저장하고 있음
+	AS
+	SELECT ~
+ 	[옵션]
+ 	- WITH CHECK OPTION : DML이 가능
+	- WITH READ ONLY : 읽기 전용
+  	// 저장된 내용 확인
+	SELECT text FROM user_views
+	WHERE view_name='대문자';
+	```
+- 수정
+	```
+	// 이미 있으면 REPLACE, 없으면 CREATE
+	CREATE OR REPLACE VIEW view_name
+	AS
+	SELECT~
+	```
+- 삭제
+	```
+	DROP VIEW view_name;
+	```
+</details>
+
+<details><summary>SEQUENCE</summary>
+
+- 자동 증가 번호
+- 테이블 + 시퀀스 => PRIMARY KEY 값을 만들어 줌
+- 테이블당 시퀀스는 한개만 사용한다
+- 사용처 : 게시물 번호, 맛집 번호, 영화 번호, 예약 번호
+- 시퀀스 생성
+	```
+	CREATE SEQUENCE seq_name
+	옵션 설정  // 시작번호, 증가, MAX값 설정
+	```
+- 시퀀스 옵션
+	- START WITH 1 : 1부터 시작
+	- INCREMENT BY 1 : 1씩 증가
+	- NOCYCLE : 무한한 값
+	- NOCACHE : 미리 번호 생성 없이 처리
+- 현재 값 / 다음 값
+	- seq_name.currval / seq_name.nextval
+- 시퀀스 삭제
+	```
+	DROP SEQUENCE seq_name;
+	```
+- 시퀀스는 독립적이기 때문에 테이블을 삭제해도 시퀀스는 남아있다
+- 복구하려면 삭제 후에 다시 생성
+</details>
