@@ -185,12 +185,16 @@ public class BoardList extends JPanel implements ActionListener, MouseListener {
 	 @Override
 	 public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource()==table) {
+			
+		}
 	 }
 
 	 @Override
 	 public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		 if(e.getSource()==table) {
+				table.setBackground(Color.WHITE);
+			}
 	 }
 }

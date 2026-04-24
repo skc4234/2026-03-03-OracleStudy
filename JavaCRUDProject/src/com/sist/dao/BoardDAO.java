@@ -147,4 +147,56 @@ public class BoardDAO {
 		}
 		return vo;
 	}
+	
+	// 4. 삭제
+	public boolean board_delete(int no, String pwd) {
+		boolean bCheck = false; // 비밀번호 일치 여부
+		try {
+			conn = db.getConnection();
+			String sql = "SELECT pwd FROM board WHERE no=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, no);
+			ResultSet rs =  ps.executeQuery();
+			rs.next();
+			String db_pwd = rs.getString(1);
+			rs.close();
+			if(db_pwd.equals(pwd)) {
+				bCheck = true;
+				sql = "DELETE FROM board WHERE no=?";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, no);
+				ps.executeUpdate();
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			db.disConnection(conn, ps);
+		}
+		return bCheck;
+	}
+	
+	// 5. 수정
+	public boolean board_update(int no, String pwd) {
+		boolean bCheck = false;
+		try {
+			conn = db.getConnection();
+			String sql = "SELECT pwd FROM board WHERE no=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, no);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			String db_pwd = rs.getString(1);
+			if(db_pwd.equals(pwd)) {
+				bCheck = true;
+				//sql = "UPDATE board SET "
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			db.disConnection(conn, ps);
+		}
+		return bCheck;
+	}
 }

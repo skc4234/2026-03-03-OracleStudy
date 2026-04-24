@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.*;
+import com.sist.dao.*;
+import com.sist.vo.*;
 public class BoardDelete extends JPanel implements ActionListener {
 	JLabel titleLa,la;
 	JPasswordField pf;
@@ -36,15 +38,34 @@ public class BoardDelete extends JPanel implements ActionListener {
    	     
    	     add(la);
    	     add(pf);
+   	     b1.addActionListener(this);
    	     b2.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==b2) {
-			mf.cp.card.show(mf.cp, "BLIST");
-			mf.cp.bList.print();
+		if(e.getSource()==b1) {
+			BoardDAO dao = BoardDAO.newInstance();
+			String pwd = String.valueOf(pf.getPassword());
+			if(pwd.trim().length()<1) { // 입력없음
+				pf.requestFocus();
+				return; // 강제 입력
+			}
+			String no = mf.cp.bDetail.no.getText();
+			boolean bCheck = dao.board_delete(Integer.parseInt(no), pwd);
+			if(bCheck) {
+				mf.cp.card.show(mf.cp, "BLIST");
+				mf.cp.bList.print();
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "비밀번호가 틀립니다...");
+				pf.setText("");
+				pf.requestFocus();
+			}
+		}
+		else if(e.getSource()==b2) {
+			mf.cp.card.show(mf.cp, "BDETAIL");
 		}
 	}
 }
