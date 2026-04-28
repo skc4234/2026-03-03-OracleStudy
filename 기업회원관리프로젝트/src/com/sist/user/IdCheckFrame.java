@@ -4,10 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-public class IdCheckFrame extends JFrame implements ActionListener {
+
+import com.sist.dao.MemberDAO;
+public class IdCheckFrame extends JFrame {
       JLabel la1,la2,la3;
       JButton b1,b2,b3;
       JTextField tf;
+      MemberDAO dao = MemberDAO.newInstance();
       
       public IdCheckFrame()
       {
@@ -42,29 +45,9 @@ public class IdCheckFrame extends JFrame implements ActionListener {
     	  add(p);
     	  setSize(290, 220);
     	  //setVisible(true);
-    	b1.addActionListener(this);
-    	b2.addActionListener(this);
       }
 		/*
 		 * public static void main(String[] args) { new IdCheckFrame(); }
 		 */
-
-	  @Override
-	  public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource()==b1) {
-			if(tf.getText().trim().length()<1) {
-				tf.setText("");
-				tf.requestFocus();
-				return;
-			}
-			else {
-				b2.setVisible(true);
-			}
-		}
-		else if(e.getSource()==b2) {
-			
-		}
-	  }
       
 }

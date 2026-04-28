@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 public class MenuPanel extends JPanel implements ActionListener {
-	JButton b1,b2,b3,b4,b5,b6;
+	JButton b1,b2,b3,b4,b5,b6,b7,b8;
 	ControllerPanel cp;
 	public MenuPanel(ControllerPanel cp) {
 		this.cp = cp;
@@ -15,25 +15,36 @@ public class MenuPanel extends JPanel implements ActionListener {
 		b3=new JButton("회원가입");
 		b4=new JButton("마이페이지");
 		b5=new JButton("관리자페이지");
-		//b5.setVisible(true);
 		b6=new JButton("나가기");
-		setLayout(new GridLayout(1, 6, 5, 5));
-		add(b1);add(b2);add(b3);
-		add(b4);add(b5);add(b6);
-//		setLayout(new GridLayout(1, 5, 5, 5));
-//		if(b5.isVisible()) {
-//			add(b1);add(b2);add(b3);
-//			add(b5);add(b6);
-//		}
-//		else {
-//			add(b1);add(b2);add(b3);
-//			add(b4);add(b6);
-//		}
+		b7=new JButton("로그아웃");
+		b8=new JButton("문의하기");
+		setLayout(new GridLayout(1, 5, 5, 5));
+		//add(b1);add(b2);add(b3);add(b4);add(b5);add(b6);add(b7);
+		init();
 		b1.addActionListener(this);
-		//b3.addActionListener(this);
 		b5.addActionListener(this);
 		b6.addActionListener(this);
+		b8.addActionListener(this);
 	}
+	
+	public void init() {
+		removeAll();
+		add(b1);
+		if(UserMainFrame.bLogin) {
+			if(UserMainFrame.isAdmin=='y') {
+				add(b5);
+			}
+			else {
+				add(b4); add(b8);
+			}
+			add(b7);
+		}
+		else {
+			add(b2);add(b3);
+		}
+		add(b6);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -44,10 +55,10 @@ public class MenuPanel extends JPanel implements ActionListener {
 			cp.card.show(cp, "HOME");
 		}
 		else if(e.getSource()==b5) {
+			cp.card.show(cp, "ADMIN");
+		}
+		else if(e.getSource()==b8) {
 			cp.card.show(cp, "SUPPORT");
 		}
-//		if(e.getSource()==b3) {
-//			cp.card.show(cp, "JOIN");
-//		}
 	}
 }

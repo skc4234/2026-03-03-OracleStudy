@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+
+import com.sist.dao.SupportDAO;
+import com.sist.vo.*;
 public class SupportForm extends JPanel implements ActionListener {
 	JLabel idLa, pwdLa, nameLa, phLa, ctLa;
 	JTextField idtf, nametf, phtf;
@@ -12,6 +15,7 @@ public class SupportForm extends JPanel implements ActionListener {
 	JPasswordField pf;
 	JButton b1,b2;
 	ControllerPanel cp;
+	SupportDAO dao = SupportDAO.newInstance();
 	public SupportForm(ControllerPanel cp) {
 		this.cp=cp;
 		setLayout(null);
@@ -59,20 +63,61 @@ public class SupportForm extends JPanel implements ActionListener {
 		JScrollPane js = new JScrollPane(ctta);
 		js.setBounds(250,190,500, 200);
 		add(js);
-		
 		JPanel p = new JPanel();
 		b1 = new JButton("접수");
 		b2 = new JButton("취소");
 		p.add(b1);p.add(b2);
 		p.setBounds(300, 450, 300, 50);
 		add(p);
-		
+		b1.addActionListener(this);
 		b2.addActionListener(this);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==b2) {
+		
+		if(e.getSource()==b1) {
+			String id = idtf.getText();
+			String pwd = String.valueOf(pf.getPassword());
+			String name = nametf.getText();
+			String phone = phtf.getText();
+			String content = ctta.getText();
+			if(id.trim().length()<1||pwd.trim().length()<1||name.trim().length()<1||phone.trim().length()<1||content.trim().length()<1) {
+				JOptionPane.showMessageDialog(this, "비어있습니다");
+				return;
+			}
+			else {
+				if(dao.supportIdCheck(id)) {
+					SupportVO vo = new SupportVO();
+					vo.setId(id);
+					vo.setPwd(pwd);
+					vo.setName(name);
+					vo.setPhone(phone);
+					vo.setContent(content);
+					int check = dao.supportInsert(vo);
+					if(check>0) {
+						JOptionPane.showMessageDialog(this, "문의하기가 들어갔습니다");
+						idtf.setText("");
+						pf.setText("");
+						nametf.setText("");
+						phtf.setText("");
+						ctta.setText("");
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "실패하였습니다");
+						
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "아이디가 잘못되었습니다");
+					idtf.setText("");
+					idtf.requestFocus();
+					return;
+				}
+			}
+			//dao.supportInsert(null);
+		}
+		else if(e.getSource()==b2) {
 			cp.card.show(cp, "HOME");
 		}
 	}

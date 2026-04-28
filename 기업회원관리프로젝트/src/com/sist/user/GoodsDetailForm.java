@@ -110,6 +110,7 @@ implements ActionListener
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+    	b1.setEnabled(UserMainFrame.bLogin);
     }
 	@Override
 	public void actionPerformed(ActionEvent e) {

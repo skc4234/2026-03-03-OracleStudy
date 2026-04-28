@@ -152,4 +152,40 @@ public class GoodsDAO {
 		}
 		return vo;
 	}
+	
+	
+	// Goods_all 전체 데이터 출력
+	public List<GoodsVO> goodsListDataAll(int type) {
+		List<GoodsVO> list = new ArrayList<GoodsVO>();
+		try {
+			getConnection();
+			String sql = "SELECT no, goods_name, goods_sub, goods_price, goods_discount, goods_first_price, goods_delivery, "
+					+ "goods_poster, hit "
+					+ "FROM " + tables[type] + " "
+					+ "ORDER BY no ASC";
+					// 페이지 나누기 : 인라인뷰 => offset
+			ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				GoodsVO vo = new GoodsVO();
+				vo.setNo(rs.getInt(1));
+				vo.setGoods_name(rs.getString(2));
+				vo.setGoods_sub(rs.getString(3));
+				vo.setGoods_price(rs.getString(4));
+				vo.setGoods_discount(rs.getInt(5));
+				vo.setGoods_first_price(rs.getString(6));
+				vo.setGoods_delivery(rs.getString(7));
+				vo.setGoods_poster(rs.getString(8));
+				vo.setHit(rs.getInt(9));
+				list.add(vo);
+			}
+			rs.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			disConnection();
+		}
+		return list;
+	}
 }
