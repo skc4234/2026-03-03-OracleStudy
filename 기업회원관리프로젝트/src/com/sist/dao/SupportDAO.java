@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sist.vo.MemberVO;
 import com.sist.vo.SupportVO;
 
 public class SupportDAO {
@@ -60,13 +61,14 @@ public class SupportDAO {
 				int check = 0;
 				try {
 					getConnection();
-					String sql = "INSERT INTO support VALUES(support_no.nextval, ?, ?, ?, ?, ?, SYSDATE, 'n', NULL)";
+					String sql = "INSERT INTO support VALUES(support_no_seq.nextval, ?, ?, ?, ?, ?, ?, SYSDATE, 'n', NULL)";
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, vo.getId());
 					ps.setString(2, vo.getPwd());
 					ps.setString(3, vo.getName());
-					ps.setString(4, vo.getPhone());
-					ps.setString(5, vo.getContent());
+					ps.setString(4, vo.getTitle());
+					ps.setString(5, vo.getPhone());
+					ps.setString(6, vo.getContent());
 					check = ps.executeUpdate();
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -77,18 +79,17 @@ public class SupportDAO {
 				return check;
 			}
 			
-			// id가 맞는지 체크
-			// String으로 바꿀 수도 있음
-			public boolean supportIdCheck(String id) {
+			// 비밀번호가 맞는지 체크
+			public boolean supportPwdCheck(String id, String pwd) {
 				boolean bCheck = false;
 				try {
 					getConnection();
-					String sql = "SELECT COUNT(*) FROM member WHERE id=?";
+					String sql = "SELECT pwd FROM member WHERE id=?";
 					ps = conn.prepareStatement(sql);
 					ps.setString(1, id);
 					ResultSet rs = ps.executeQuery();
 					rs.next();
-					if(rs.getInt(1)>0) bCheck=true;
+					if(pwd.equals(rs.getString(1))) bCheck=true;
 					rs.close();
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -116,7 +117,7 @@ public class SupportDAO {
 				List<SupportVO> list = new ArrayList<SupportVO>();
 				try {
 					getConnection();
-					String sql = "SELECT no, id, name, phone, content, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS'), isAnswer "
+					String sql = "SELECT no, id, name, phone, content, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS'), isAnswer, title "
 							+ "FROM support "
 							+ "ORDER BY no DESC";
 					ps = conn.prepareStatement(sql);
@@ -130,6 +131,7 @@ public class SupportDAO {
 						vo.setContent(rs.getString(5));
 						vo.setDbday(rs.getString(6));
 						vo.setIsAnswer(rs.getString(7));
+						vo.setTitle(rs.getString(8));
 						list.add(vo);
 					}
 					rs.close();
@@ -146,7 +148,7 @@ public class SupportDAO {
 				SupportVO vo = new SupportVO();
 				try {
 					getConnection();
-					String sql = "SELECT no, id, name, phone, content, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS'), isAnswer "
+					String sql = "SELECT no, id, name, phone, content, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS'), isAnswer, title, answer "
 							+ "FROM support "
 							+ "WHERE no = ?";
 					ps = conn.prepareStatement(sql);
@@ -160,6 +162,8 @@ public class SupportDAO {
 					vo.setContent(rs.getString(5));
 					vo.setDbday(rs.getString(6));
 					vo.setIsAnswer(rs.getString(7));
+					vo.setTitle(rs.getString(8));
+					vo.setAnswer(rs.getString(9));
 					rs.close();
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -169,4 +173,41 @@ public class SupportDAO {
 				}
 				return vo;
 			}
+			
+			public void supportUpdate(int no, String answer) {
+				try {
+					getConnection();
+					String sql = "UPDATE support SET answer = ?, isAnswer = 'y' WHERE no = "+no;
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, answer);
+					ps.executeUpdate();
+					System.out.println("성공");
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				} finally {
+					disConnection();
+				}
+			}
+			
+			  public MemberVO memberOneData(String id) {
+				  MemberVO vo = new MemberVO();
+				  try {
+					getConnection();
+					String sql = "SELECT name, phone FROM member WHERE id=?";
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, id);
+					ResultSet rs = ps.executeQuery();
+					rs.next();
+					vo.setName(rs.getString(1));
+					vo.setPhone(rs.getString(2));
+					rs.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				} finally {
+					disConnection();
+				}
+				  return vo;
+			  }
 }

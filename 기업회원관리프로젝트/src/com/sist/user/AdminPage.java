@@ -21,9 +21,14 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
     JTable table;
     JButton b1,b2,b3,b4;
     int type=1;
+    JPanel pan = new JPanel();
+    
     
     DefaultTableModel model;
     TableColumn column;
+//    String[] col;
+//    String[][] row;
+    SupportListPage slp;
     
 	public AdminPage(ControllerPanel cp) {
 		this.cp = cp;// 배치 
@@ -35,10 +40,17 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
 		b3 = new JButton("대출 목록");
 		b4 = new JButton("문의사항");
 		p.add(b1);p.add(b2);p.add(b3);p.add(b4);
-		p.setBounds(10, 20, 400, 35);
+		p.setBounds(10, 10, 400, 35);
 		add(p);
+		pan.setLayout(null);
+		pan.setBounds(10, 50, 965, 600);
+		//pan.setBackground(Color.cyan);
 		
-//		String[] col={"No", "상품명","설명","가격","할인","실구매가"};//<tr><th></th>....</tr>
+		add(pan);
+		//goodsListPrint();
+		
+		
+//		String[] col={"No","이름(아이디)","제목","전화번호","날짜","답변여부"};//<tr><th></th>....</tr>
 //    	String[][] row=new String[0][6];
 //    	// 한줄에 5개 데이터를 첨부 
 //    	model=new DefaultTableModel(row,col) // 데이터 관리
@@ -63,7 +75,7 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
 //    		}
 //    		else if(i==1)
 //    		{
-//    			column.setPreferredWidth(250);
+//    			column.setPreferredWidth(100);
 //    		}
 //    		else if(i==2)
 //    		{
@@ -86,22 +98,21 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
 //    	table.setShowVerticalLines(false);
 //    	table.setRowHeight(30);
 //    	table.getTableHeader().setBackground(Color.pink);
-//    	
-//    	
 //    	js.setBounds(10, 70, 950, 240);
 //    	add(js);
-    	//goodsListPrint();
-    	
-    	//titleLa.setBounds(180, 15, 620, 50);
-    	//add(titleLa);
+		
+		
     	b1.addActionListener(this);
     	b2.addActionListener(this);
     	b3.addActionListener(this);
     	b4.addActionListener(this);
+    	//table.addMouseListener(this);
 	}
 	
 	public void goodsListPrint()
     {
+		type=1;
+		pan.removeAll();
 		String[] col={"No", "상품명","설명","가격","할인","실구매가"};//<tr><th></th>....</tr>
     	String[][] row=new String[0][6];
     	// 한줄에 5개 데이터를 첨부 
@@ -150,8 +161,8 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
     	table.setShowVerticalLines(false);
     	table.setRowHeight(30);
     	table.getTableHeader().setBackground(Color.pink);
-    	js.setBounds(10, 70, 950, 240);
-    	add(js);
+    	js.setBounds(10, 10, 945, 300);
+    	pan.add(js);
 		
     	// 테이블 지우기
     	for(int i=model.getRowCount()-1; i>=0; i--) {
@@ -175,12 +186,16 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
     		};
     		model.addRow(data);
     	}
+    	pan.updateUI();
+    	table.addMouseListener(this);
   
     }
 
 	public void supportListPrint()
     {
-		String[] col={"No", "아이디","이름","전화번호","날짜","답변여부"};//<tr><th></th>....</tr>
+		type = 4;
+		pan.removeAll();
+		String[] col={"No","이름(아이디)","제목","전화번호","날짜","답변여부"};//<tr><th></th>....</tr>
     	String[][] row=new String[0][6];
     	// 한줄에 5개 데이터를 첨부 
     	model=new DefaultTableModel(row,col) // 데이터 관리
@@ -201,35 +216,36 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
     		column=table.getColumnModel().getColumn(i);
     		if(i==0)
     		{
-    			column.setPreferredWidth(50);
+    			column.setPreferredWidth(45);
     		}
     		else if(i==1)
     		{
-    			column.setPreferredWidth(250);
+    			column.setPreferredWidth(150);
     		}
     		else if(i==2)
     		{
-    			column.setPreferredWidth(300);
+    			column.setPreferredWidth(350);
     		}
     		else if(i==3)
     		{
-    			column.setPreferredWidth(75);
+    			column.setPreferredWidth(100);
     		}
     		else if(i==4)
     		{
-    			column.setPreferredWidth(50);
+    			column.setPreferredWidth(150);
     		}
     		else if(i==5)
     		{
-    			column.setPreferredWidth(75);
+    			column.setPreferredWidth(50);
     		}
     	}
     	table.getTableHeader().setReorderingAllowed(false);
     	table.setShowVerticalLines(false);
     	table.setRowHeight(30);
     	table.getTableHeader().setBackground(Color.pink);
-    	js.setBounds(10, 70, 950, 240);
-    	add(js);
+    	js.setBounds(10, 10, 945, 300);
+    	pan.add(js);
+		
 		
     	// 테이블 지우기
     	for(int i=model.getRowCount()-1; i>=0; i--) {
@@ -245,15 +261,15 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
     	for(SupportVO vo : list) {
     		String[] data = {
     			String.valueOf(vo.getNo()),
-    			vo.getId(),
-    			vo.getName(),
+    			vo.getName()+"("+vo.getId()+")",
+    			vo.getTitle(),
     			vo.getPhone(),
     			vo.getDbday(),
     			vo.getIsAnswer()
     		};
     		model.addRow(data);
     	}
-
+    	pan.updateUI();
     	table.addMouseListener(this);
   
     }
@@ -262,7 +278,7 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==b1) {
-			//goodsListPrint();
+			goodsListPrint();
 		}
 		else if(e.getSource()==b2) {
 			
@@ -272,20 +288,30 @@ public class AdminPage extends JPanel implements ActionListener, MouseListener {
 		}
 		else if(e.getSource()==b4) {
 			supportListPrint();
+			
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource()==table) {
-			if(e.getClickCount()==2) { // 더블 클릭
+		if(e.getSource()==table&&e.getClickCount()==2) {
+			if(type==4) { // 더블 클릭
 				// 선택된 ROW
 				int row = table.getSelectedRow();
 				String no = model.getValueAt(row, 0).toString();
-				JOptionPane.showMessageDialog(this, "선택된 게시물 번호 : " + no);
+				//JOptionPane.showMessageDialog(this, "선택된 게시물   번호 : " + no);
 				cp.card.show(cp, "ANSWER");
 				cp.ansp.print(Integer.parseInt(no));
+			}
+			else if(type==1) {
+				
+			}
+			else if(type==2) {
+				
+			}
+			else if(type==3) {
+				
 			}
 		}
 	}

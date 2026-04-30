@@ -22,6 +22,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 		//add(b1);add(b2);add(b3);add(b4);add(b5);add(b6);add(b7);
 		init();
 		b1.addActionListener(this);
+		b4.addActionListener(this);
 		b5.addActionListener(this);
 		b6.addActionListener(this);
 		b8.addActionListener(this);
@@ -56,9 +57,15 @@ public class MenuPanel extends JPanel implements ActionListener {
 		}
 		else if(e.getSource()==b5) {
 			cp.card.show(cp, "ADMIN");
+			//cp.ap.goodsListPrint();
 		}
 		else if(e.getSource()==b8) {
 			cp.card.show(cp, "SUPPORT");
+			cp.sf.print();
+		}
+		else if(e.getSource()==b4) {
+			cp.card.show(cp, "MYPAGE");
+			cp.mp.print();
 		}
 	}
 }

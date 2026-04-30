@@ -34,6 +34,8 @@ public class UserMainFrame extends JFrame implements ActionListener {
 		login.b2.addActionListener(this); // 취소
 		mp.b7.addActionListener(this); // 로그아웃
 		
+
+		
 	}
 	
 	
@@ -47,8 +49,11 @@ public class UserMainFrame extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 		// 연습용
+		//cp.myId = "user01";
 		bLogin = true;
 		isAdmin = 'y';
+		
+		
 		new UserMainFrame();
 	}
 
@@ -101,11 +106,14 @@ public class UserMainFrame extends JFrame implements ActionListener {
 				String title = vo.getId()+"(" + s + ")님 환영합니다";
 				setTitle(title);
 				cp.myId = vo.getId();
-				cp.sf.idtf.setText(cp.myId);
+				//cp.sf.idtf.setText(cp.myId);
 				UserMainFrame.bLogin = true;
 				UserMainFrame.isAdmin = vo.getIsAdmin().charAt(0);
 				mp.init();
 				login.setVisible(false);
+				if(vo.getIsAdmin().equals("y")) {
+					cp.card.show(cp, "ADMIN");
+				}
 			}
 		}
 		else if(e.getSource()==login.b2) {

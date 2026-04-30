@@ -18,6 +18,6 @@ ANSWER            CLOB
 @Data
 public class SupportVO {
 	private int no;
-	private String id, pwd, name, phone, content, dbday, isAnswer, answer;
+	private String id, pwd, name, phone, content, dbday, isAnswer, answer, title;
 	private Date date;
 }

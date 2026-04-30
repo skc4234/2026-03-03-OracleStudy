@@ -19,6 +19,6 @@ REGDATE          DATE
  */
 @Data
 public class MemberVO {
-	private String id, pwd, name, sex, post, addr1, addr2, phone, content, isAdmin, dbday, msg;
+	private String id, pwd, name, sex, post, addr1, addr2, phone, content, isAdmin, dbday, msg, grade;
 	private Date date;
 }

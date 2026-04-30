@@ -13,6 +13,7 @@ import javax.swing.*;
 
 import com.sist.commons.ImageChange;
 import com.sist.dao.GoodsDAO;
+import com.sist.vo.BuyVO;
 import com.sist.vo.GoodsVO;
 
 public class GoodsDetailForm extends JPanel
@@ -89,6 +90,7 @@ implements ActionListener
          p.setBounds(330, 200, 435, 35);
          add(p);
          b2.addActionListener(this);
+         b1.addActionListener(this);
     }
     public void print(int type,int gno)
     {
@@ -117,6 +119,24 @@ implements ActionListener
 		// TODO Auto-generated method stub
 		if(e.getSource()==b2) {
 			cp.card.show(cp, "HOME");
+		}
+		else if(e.getSource()==b1) {
+			BuyVO vo = new BuyVO();
+			vo.setGno(gno);
+			vo.setType(type);
+			// id, 수량, 가격, 총액
+			String id = cp.myId;
+			vo.setId(id);
+			int account = (int)box.getSelectedItem();
+			vo.setAccount(account);
+			String p = price.getText(); // 35,000원
+			p=p.replaceAll("[^0-9]", ""); // 숫자 제외한 문자 전부 공백 => 35000
+			// "^[0-9] : 숫자로 시작하는
+			vo.setPrice(Integer.parseInt(p));
+			dao.goodsBuyData(vo);
+			JOptionPane.showMessageDialog(this, "구매완료!!");
+			cp.card.show(cp, "MYPAGE");
+			cp.mp.print();
 		}
 	}
 }

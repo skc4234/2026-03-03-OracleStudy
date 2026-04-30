@@ -188,4 +188,92 @@ public class GoodsDAO {
 		}
 		return list;
 	}
+	
+	/*
+	NO      NOT NULL NUMBER       
+	ID               VARCHAR2(20) 
+	TYPE    NOT NULL NUMBER       
+	GNO     NOT NULL NUMBER      
+	ACCOUNT          NUMBER       
+	PRICE            NUMBER       
+	REGDATE          DATE
+	 */
+	
+	// 구매
+	public void goodsBuyData(BuyVO vo) {
+		try {
+			getConnection();
+			String sql = "INSERT INTO buy VALUES(buy_no_seq.nextval, ?, ?, ?, ?, ?, SYSDATE)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, vo.getId());
+			ps.setInt(2, vo.getType());
+			ps.setInt(3, vo.getGno());
+			ps.setInt(4, vo.getAccount());
+			ps.setInt(5, vo.getPrice());
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			disConnection();
+		}
+	}
+	
+	// **조인
+	/*
+	 *    고객     <구매>     도서
+	 *            고객id
+	 *            도서번호
+	 *            ...
+	 *            
+	 *    INNER JOIN(EQUI JOIN)
+	 *    OUTER JOIN(LEFT/RIGT JOIN)
+	 */
+	public List<BuyVO> buyListData(String id) {
+		List<BuyVO> list = new ArrayList<BuyVO>();
+		try {
+			getConnection();
+			String sql = "SELECT b.no, goods_poster, goods_name, account, TO_CHAR(regdate, 'YYYY-MM-DD HH24:MI:SS'), price "
+					+ "FROM goods_all g JOIN buy b "
+					+ "ON g.no = b.gno "
+					+ "AND b.id = ? "
+					+ "ORDER BY regdate DESC";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				BuyVO vo = new BuyVO();
+				vo.setNo(rs.getInt(1));
+				vo.getBvo().setGoods_poster(rs.getString(2));
+				vo.getBvo().setGoods_name(rs.getString(3));
+				vo.setAccount(rs.getInt(4));
+				vo.setDbday(rs.getString(5));
+				vo.setPrice(rs.getInt(6));
+				list.add(vo);
+			}
+			rs.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			disConnection();
+		}
+		return list;
+	}
+	
+	// 목록 삭제
+	public void buyDelete(int no) {
+		try {
+			getConnection();
+			String sql = "DELETE FROM buy "
+					+ "WHERE no="+no;
+			ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			disConnection();
+		}
+	}
 }
